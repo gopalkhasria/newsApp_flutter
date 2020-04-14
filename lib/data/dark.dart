@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 class DarkTheme with ChangeNotifier{
   bool _isDark = false;
   int _page=0;
+  bool dial=true;
 
   DarkTheme(this._isDark, this._page);
 

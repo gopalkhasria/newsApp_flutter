@@ -1,7 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:news_provider/data/Article.dart';
+import 'package:news_provider/data/User.dart';
+import 'package:news_provider/data/dark.dart';
 import 'package:news_provider/navbar.dart';
 import 'package:provider/provider.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -72,7 +75,9 @@ class ListArticle extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                            ArticleWeb(url: articlesList.articles[index].url)),
+                            ArticleWebState(url: articlesList.articles[index].url, 
+                             article: articlesList.articles[index]
+                            )),
                   ),
                   child: Column(
                     children: <Widget>[
@@ -105,18 +110,22 @@ class ListArticle extends StatelessWidget {
   }
 }
 
-class ArticleWeb extends StatelessWidget {
+class ArticleWebState extends StatelessWidget {
   final Completer<WebViewController> _controller =
       Completer<WebViewController>();
   final url;
-  ArticleWeb({Key key, this.url}) : super(key: key);
+  final ArticleModel article;
+  ArticleWebState({Key key, this.url, this.article}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    var user = Provider.of<User>(context);
+    var utilities = Provider.of<DarkTheme>(context);
     return Scaffold(
       appBar: myAppBar(context),
-      body: Column(children: [
+      body: Column(
+        children: [
         Expanded(
-          child: WebView(
+          child:  WebView(
             initialUrl: url,
             onWebViewCreated: (WebViewController webViewController) {
               _controller.complete(webViewController);
@@ -124,7 +133,27 @@ class ArticleWeb extends StatelessWidget {
           ),
         ),
       ]),
-      bottomNavigationBar: myBottomNavBar(context),
+      floatingActionButton: SpeedDial(
+        backgroundColor: utilities.getTheme() ? Colors.black : Colors.white,
+        animatedIcon: AnimatedIcons.menu_close,
+        animatedIconTheme: IconThemeData(
+          color: utilities.getTheme() ? Colors.white : Colors.black
+        ),
+        visible: utilities.dial,
+        curve: Curves.bounceIn,
+        children: [
+          SpeedDialChild(
+            child: Icon(Icons.share, color: utilities.getTheme() ? Colors.white : Colors.black),
+            backgroundColor: utilities.getTheme() ? Colors.black : Colors.white,
+          ),
+          if(user.token != null)
+          SpeedDialChild(
+            child: Icon(Icons.save, color: utilities.getTheme() ? Colors.white : Colors.black),
+            backgroundColor: utilities.getTheme() ? Colors.black : Colors.white,
+            onTap: ()=> user.saveArticle(article,utilities),
+          ),
+        ]
+      )
     );
   }
 }

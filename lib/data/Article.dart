@@ -24,15 +24,25 @@ class Articles with ChangeNotifier{
   bool error = false;
 
   Articles(){
-    loadArticles("us");
+    loadArticles("no");
   }
 
   void loadArticles(String country) async{
-    articles = [];
-    notifyListeners();
-    var response = await http.get("http://192.168.56.1:8080/articles?country="+country);
-    var list = jsonDecode(response.body) as List;
-    articles =  list.map((i)=>ArticleModel.fromJson(i)).toList();
-    notifyListeners();
+    String url="http://192.168.56.1:3000/articles/";
+    try {
+      articles = [];
+      notifyListeners();
+      if(country != "no") 
+          url += country;
+      else
+          url += "no";
+      var response = await http.get(url);
+      var list = jsonDecode(response.body) as List;
+      articles =  list.map((i)=>ArticleModel.fromJson(i)).toList();
+      notifyListeners();  
+    } catch (e) {
+      error = true;
+      notifyListeners();
+    }
   }
 }
