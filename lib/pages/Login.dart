@@ -3,6 +3,7 @@ import 'package:news_provider/data/Article.dart';
 import 'package:news_provider/data/Save.dart';
 import 'package:news_provider/data/User.dart';
 import 'package:news_provider/data/dark.dart';
+import 'package:news_provider/pages/SignUp.dart';
 import 'package:provider/provider.dart';
 
 class Login extends StatelessWidget {
@@ -44,9 +45,10 @@ class Login extends StatelessWidget {
                   TextFormField(
                     decoration: InputDecoration(
                       labelText: "Your Email",
-                      enabledBorder: UnderlineInputBorder(      
-                        borderSide: BorderSide(color: user.error ? Colors.red : Colors.black45),   
-                      ),  
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                            color: user.error ? Colors.red : Colors.black45),
+                      ),
                       focusedBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
                           color: theme.getTheme() ? Colors.white : Colors.black,
@@ -61,8 +63,9 @@ class Login extends StatelessWidget {
                   TextFormField(
                     decoration: InputDecoration(
                       labelText: "Password",
-                      enabledBorder: UnderlineInputBorder(      
-                        borderSide: BorderSide(color: user.error ? Colors.red : Colors.black45),   
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                            color: user.error ? Colors.red : Colors.black45),
                       ),
                       focusedBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
@@ -95,7 +98,8 @@ class Login extends StatelessWidget {
                             left: 38, right: 38, top: 15, bottom: 15),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5)),
-                        onPressed: () => user.login(articleIstance, savedIstance),
+                        onPressed: () =>
+                            user.login(articleIstance, savedIstance),
                       )
                     ],
                   )
@@ -116,7 +120,13 @@ class Login extends StatelessWidget {
               style: TextStyle(color: Colors.grey),
             ),
             FlatButton(
-              onPressed: () {},
+              onPressed: () {
+                user.setExist();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SignUp()),
+                );
+              },
               child: Text("Create Account"),
             )
           ],

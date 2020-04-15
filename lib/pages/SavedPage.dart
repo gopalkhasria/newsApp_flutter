@@ -16,7 +16,7 @@ class SavedPage extends StatelessWidget{
     return Scaffold(
       appBar: myAppBar(context),
       bottomNavigationBar:  myBottomNavBar(context),
-      body: savedArticle.savedArticle == null ? errorWidget() : ListArticle());
+      body: savedArticle.isLoaded  ?ListArticle() : errorWidget());
   }
 }
 

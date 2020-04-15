@@ -24,6 +24,7 @@ class SavedModel{
 
 class Saved with ChangeNotifier{
   List<SavedModel> savedArticle;
+  bool isLoaded = false;
   Saved();
 
   loadSavedArticle(String id, String token) async{
@@ -33,7 +34,7 @@ class Saved with ChangeNotifier{
     );
     var list = jsonDecode(response.body) as List;
     savedArticle =  list.map((i)=>SavedModel.fromJson(i)).toList();
-    print(savedArticle);
+    isLoaded = true;
     notifyListeners();
   }
 }
