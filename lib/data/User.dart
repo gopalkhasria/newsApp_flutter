@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 import 'package:news_provider/data/Article.dart';
+import 'package:news_provider/data/Save.dart';
 import 'package:news_provider/data/dark.dart';
 
 class User with ChangeNotifier{
@@ -23,7 +24,7 @@ class User with ChangeNotifier{
     password = value;
   }
 
-  void login(Articles articleInstance) async {
+  void login(Articles articleInstance, Saved savedIstance) async {
     var headers = {
         'Content-Type': 'application/json',
       };
@@ -44,10 +45,11 @@ class User with ChangeNotifier{
     country = helper[2];
     id = helper[3];
     articleInstance.loadArticles(country);
+    savedIstance.loadSavedArticle(id, token);
     notifyListeners();
   }
 
-  saveArticle(ArticleModel article, DarkTheme utilities) async {
+  saveArticle(ArticleModel article, DarkTheme utilities, Saved instance) async {
     var data =json.encode({
       "id": id,
       "title": article.title,
@@ -62,6 +64,25 @@ class User with ChangeNotifier{
       var response = await http.post("http://192.168.56.1:3000/articles/save",
         headers: headers,
         body: data);
-      print(response.statusCode);
+      if(response.statusCode == 200){
+      instance.loadSavedArticle(id, token);
+    }
+  }
+
+  removeSavedArticle(SavedModel savedModel, Saved instance)async {
+    var data =json.encode({
+      "id": savedModel.id,
+      "user_id": id
+    });
+    var headers = {
+        'Content-Type': 'application/json',
+        'Authorization': token
+    };
+    var response = await http.post("http://192.168.56.1:3000/articles/delete",
+      headers: headers,
+      body: data);
+    if(response.statusCode == 200){
+      instance.loadSavedArticle(id, token);
+    }
   }
 }

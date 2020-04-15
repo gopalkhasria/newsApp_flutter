@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:news_provider/data/Article.dart';
+import 'package:news_provider/data/Save.dart';
 import 'package:news_provider/data/User.dart';
 import 'package:news_provider/data/dark.dart';
 import 'package:provider/provider.dart';
@@ -9,6 +10,7 @@ class Login extends StatelessWidget {
   Widget build(BuildContext context) {
     var theme = Provider.of<DarkTheme>(context);
     Articles articleIstance = Provider.of<Articles>(context);
+    Saved savedIstance = Provider.of<Saved>(context);
     var screenHeight = MediaQuery.of(context).size.height;
     User user = Provider.of<User>(context);
     return Column(
@@ -93,7 +95,7 @@ class Login extends StatelessWidget {
                             left: 38, right: 38, top: 15, bottom: 15),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5)),
-                        onPressed: () => user.login(articleIstance),
+                        onPressed: () => user.login(articleIstance, savedIstance),
                       )
                     ],
                   )

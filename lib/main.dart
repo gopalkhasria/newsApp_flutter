@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:news_provider/data/Article.dart';
+import 'package:news_provider/data/Save.dart';
 import 'package:news_provider/data/User.dart';
 import 'package:news_provider/data/dark.dart';
 import 'package:news_provider/pages/ArticlePage.dart';
-import 'package:news_provider/pages/Saved.dart';
+import 'package:news_provider/pages/SavedPage.dart';
 import 'package:news_provider/pages/UserData.dart';
 import 'package:provider/provider.dart';
 
@@ -19,7 +20,8 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_)=> DarkTheme(false, 0)),
         ChangeNotifierProvider(create: (_)=> Articles()),
-        ChangeNotifierProvider(create: (_)=> User())
+        ChangeNotifierProvider(create: (_)=> User()),
+        ChangeNotifierProvider(create: (_)=> Saved())
       ],
       child: HomePage(),
     );
@@ -48,7 +50,7 @@ Widget switchPage(BuildContext context) {
     case 0:
       return ArticlePage();
     case 1:
-      return Saved();
+      return SavedPage();
     case 2:
       return UserData();
   }

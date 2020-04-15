@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:news_provider/data/Article.dart';
+import 'package:news_provider/data/Save.dart';
 import 'package:news_provider/data/User.dart';
 import 'package:news_provider/data/dark.dart';
 import 'package:news_provider/navbar.dart';
@@ -74,10 +75,9 @@ class ListArticle extends StatelessWidget {
                   onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) =>
-                            ArticleWebState(url: articlesList.articles[index].url, 
-                             article: articlesList.articles[index]
-                            )),
+                        builder: (context) => ArticleWebState(
+                            url: articlesList.articles[index].url,
+                            article: articlesList.articles[index])),
                   ),
                   child: Column(
                     children: <Widget>[
@@ -91,9 +91,11 @@ class ListArticle extends StatelessWidget {
                       ),
                       Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: FadeInImage.assetNetwork(
-                              placeholder: 'assets/news-placeholder.png',
-                              image: articlesList.articles[index].image)),
+                          child: articlesList.articles[index].image == null
+                              ? Image.asset("assets/news-placeholder.png")
+                              : FadeInImage.assetNetwork(
+                                  placeholder: 'assets/news-placeholder.png',
+                                  image: articlesList.articles[index].image)),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
@@ -120,40 +122,42 @@ class ArticleWebState extends StatelessWidget {
   Widget build(BuildContext context) {
     var user = Provider.of<User>(context);
     var utilities = Provider.of<DarkTheme>(context);
+    var saved = Provider.of<Saved>(context);
     return Scaffold(
-      appBar: myAppBar(context),
-      body: Column(
-        children: [
-        Expanded(
-          child:  WebView(
-            initialUrl: url,
-            onWebViewCreated: (WebViewController webViewController) {
-              _controller.complete(webViewController);
-            },
+        appBar: myAppBar(context),
+        body: Column(children: [
+          Expanded(
+            child: WebView(
+              initialUrl: url,
+              onWebViewCreated: (WebViewController webViewController) {
+                _controller.complete(webViewController);
+              },
+            ),
           ),
-        ),
-      ]),
-      floatingActionButton: SpeedDial(
-        backgroundColor: utilities.getTheme() ? Colors.black : Colors.white,
-        animatedIcon: AnimatedIcons.menu_close,
-        animatedIconTheme: IconThemeData(
-          color: utilities.getTheme() ? Colors.white : Colors.black
-        ),
-        visible: utilities.dial,
-        curve: Curves.bounceIn,
-        children: [
-          SpeedDialChild(
-            child: Icon(Icons.share, color: utilities.getTheme() ? Colors.white : Colors.black),
+        ]),
+        floatingActionButton: SpeedDial(
             backgroundColor: utilities.getTheme() ? Colors.black : Colors.white,
-          ),
-          if(user.token != null)
-          SpeedDialChild(
-            child: Icon(Icons.save, color: utilities.getTheme() ? Colors.white : Colors.black),
-            backgroundColor: utilities.getTheme() ? Colors.black : Colors.white,
-            onTap: ()=> user.saveArticle(article,utilities),
-          ),
-        ]
-      )
-    );
+            animatedIcon: AnimatedIcons.menu_close,
+            animatedIconTheme: IconThemeData(
+                color: utilities.getTheme() ? Colors.white : Colors.black),
+            visible: utilities.dial,
+            curve: Curves.bounceIn,
+            children: [
+              SpeedDialChild(
+                child: Icon(Icons.share,
+                    color: utilities.getTheme() ? Colors.white : Colors.black),
+                backgroundColor:
+                    utilities.getTheme() ? Colors.black : Colors.white,
+              ),
+              if (user.token != null)
+                SpeedDialChild(
+                  child: Icon(Icons.save,
+                      color:
+                          utilities.getTheme() ? Colors.white : Colors.black),
+                  backgroundColor:
+                      utilities.getTheme() ? Colors.black : Colors.white,
+                  onTap: () => user.saveArticle(article, utilities, saved),
+                ),
+            ]));
   }
 }
