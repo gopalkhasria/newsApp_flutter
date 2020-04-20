@@ -135,7 +135,7 @@ class User with ChangeNotifier{
       });
       var headers = {
           'Content-Type': 'application/json',
-          'Authorization': "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1ODcyMTY0NDAsInVpZCI6MSwiaXNzIjoiUmVhY3R5TmV3cyJ9.5zuy7TrBlrR8I7Sj3FIbnkVNUlBBBYu615LLXvEjAP8"
+          'Authorization': ""
       };
       var response = await http.post("https://afternoon-retreat-83502.herokuapp.com/user/signup",
       headers: headers,
