@@ -24,18 +24,14 @@ class Articles with ChangeNotifier{
   bool error = false;
 
   Articles(){
-    loadArticles("no");
+    loadArticles("us");
   }
 
   void loadArticles(String country) async{
-    String url="http://192.168.56.1:3000/articles/";
+    String url="https://afternoon-retreat-83502.herokuapp.com/articles/"+country;
     try {
       articles = [];
       notifyListeners();
-      if(country != "no") 
-          url += country;
-      else
-          url += "no";
       var response = await http.get(url);
       var list = jsonDecode(response.body) as List;
       articles =  list.map((i)=>ArticleModel.fromJson(i)).toList();

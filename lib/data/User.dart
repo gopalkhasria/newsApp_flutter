@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 import 'package:news_provider/data/Article.dart';
@@ -55,14 +56,14 @@ class User with ChangeNotifier{
     saved.savedArticle = [];
     saved.isLoaded = false;
     notifyListeners();
-    articles.loadArticles("no");
+    articles.loadArticles("us");
   }
 
   void login(Articles articleInstance, Saved savedIstance) async {
     var headers = {
         'Content-Type': 'application/json',
       };
-      var response = await http.post("http://192.168.56.1:3000/user/login",
+      var response = await http.post("https://afternoon-retreat-83502.herokuapp.com/user/login",
       headers: headers,
       body: jsonEncode(<String, String>{
         "email": email,
@@ -95,7 +96,7 @@ class User with ChangeNotifier{
         'Content-Type': 'application/json',
         'Authorization': token
       };
-      var response = await http.post("http://192.168.56.1:3000/articles/save",
+      var response = await http.post("https://afternoon-retreat-83502.herokuapp.com/articles/save",
         headers: headers,
         body: data);
       if(response.statusCode == 200){
@@ -112,7 +113,7 @@ class User with ChangeNotifier{
         'Content-Type': 'application/json',
         'Authorization': token
     };
-    var response = await http.post("http://192.168.56.1:3000/articles/delete",
+    var response = await http.post("https://afternoon-retreat-83502.herokuapp.com/delete",
       headers: headers,
       body: data);
     if(response.statusCode == 200){
@@ -120,7 +121,7 @@ class User with ChangeNotifier{
     }
   }
 
-  void signup(Articles articleInstance) async{
+  void signup(Articles articleInstance, var context) async{
     if( !email.contains('@') || password.length < 3 || name.length == null || selectValue == null){
       error = true;
       notifyListeners();
@@ -132,12 +133,11 @@ class User with ChangeNotifier{
         "password": password,
         "country": helper[0]
       });
-      print(data);
       var headers = {
           'Content-Type': 'application/json',
-          'Authorization': "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiR29wYWwgU2luZ2giLCJpYXQiOjE1ODY5NTQ3ODF9.tAfNLCv3UMnkVnXU1Inrw3rwk9PSCnLZoiiiasezzhg"
+          'Authorization': "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1ODcyMTY0NDAsInVpZCI6MSwiaXNzIjoiUmVhY3R5TmV3cyJ9.5zuy7TrBlrR8I7Sj3FIbnkVNUlBBBYu615LLXvEjAP8"
       };
-      var response = await http.post("http://192.168.56.1:3000/user/signup",
+      var response = await http.post("https://afternoon-retreat-83502.herokuapp.com/user/signup",
       headers: headers,
       body: data);
       print(response.statusCode);
@@ -147,7 +147,6 @@ class User with ChangeNotifier{
         print("Sono in error");
         return;
       }else{
-        print("Sono qua");
         var helper = response.body.split(";");
         token = helper[0];
         name = helper[1];
@@ -155,6 +154,7 @@ class User with ChangeNotifier{
         id = helper[3];
         articleInstance.loadArticles(country);
         notifyListeners();
+        Navigator.of(context);
       }
     }
   }

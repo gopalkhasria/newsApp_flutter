@@ -10,18 +10,14 @@ class SignUp extends StatelessWidget {
   Widget build(BuildContext context) {
     var theme = Provider.of<DarkTheme>(context);
     Articles articleIstance = Provider.of<Articles>(context);
-    var screenHeight = MediaQuery.of(context).size.height;
     User user = Provider.of<User>(context);
-    if(user.token != null){
-      Navigator.pop(context);
-    }
     return Scaffold(
       appBar: myAppBar(context),
       body: user.exist ? errorWidget() :
       Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Container(
-            margin: EdgeInsets.only(top: screenHeight / 5),
             padding: EdgeInsets.only(left: 10, right: 10),
             child: Card(
               shape: RoundedRectangleBorder(
@@ -145,7 +141,7 @@ class SignUp extends StatelessWidget {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(5)),
                           onPressed: () =>
-                              user.signup(articleIstance),
+                              user.signup(articleIstance,context),
                         )
                       ],
                     )

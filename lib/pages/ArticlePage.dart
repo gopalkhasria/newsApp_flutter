@@ -8,6 +8,7 @@ import 'package:news_provider/data/User.dart';
 import 'package:news_provider/data/dark.dart';
 import 'package:news_provider/navbar.dart';
 import 'package:provider/provider.dart';
+import 'package:share/share.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class ArticlePage extends StatelessWidget {
@@ -99,7 +100,7 @@ class ListArticle extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
-                          articlesList.articles[index].description,
+                          articlesList.articles[index].description == null ? "No description" : articlesList.articles[index].description,
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.w500),
                         ),
@@ -144,6 +145,7 @@ class ArticleWebState extends StatelessWidget {
             curve: Curves.bounceIn,
             children: [
               SpeedDialChild(
+                onTap: () => Share.share(article.url),
                 child: Icon(Icons.share,
                     color: utilities.getTheme() ? Colors.white : Colors.black),
                 backgroundColor:

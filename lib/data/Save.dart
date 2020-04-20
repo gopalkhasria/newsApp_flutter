@@ -28,7 +28,7 @@ class Saved with ChangeNotifier{
   Saved();
 
   loadSavedArticle(String id, String token) async{
-    var url="http://192.168.56.1:3000/articles/saved/"+id;
+    var url="https://afternoon-retreat-83502.herokuapp.com/articles/saved/"+id;
     var response = await http.get(url,
     headers: {"Authorization": token},
     );

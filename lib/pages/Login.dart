@@ -12,12 +12,13 @@ class Login extends StatelessWidget {
     var theme = Provider.of<DarkTheme>(context);
     Articles articleIstance = Provider.of<Articles>(context);
     Saved savedIstance = Provider.of<Saved>(context);
-    var screenHeight = MediaQuery.of(context).size.height;
+    //var screenHeight = MediaQuery.of(context).size.height;
     User user = Provider.of<User>(context);
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Container(
-          margin: EdgeInsets.only(top: screenHeight / 4),
+          //margin: EdgeInsets.only(top: screenHeight / 4),
           padding: EdgeInsets.only(left: 10, right: 10),
           child: Card(
             shape: RoundedRectangleBorder(
@@ -121,7 +122,6 @@ class Login extends StatelessWidget {
             ),
             FlatButton(
               onPressed: () {
-                user.setExist();
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => SignUp()),
@@ -131,7 +131,6 @@ class Login extends StatelessWidget {
             )
           ],
         )
-      ],
-    );
+      ],);
   }
 }
