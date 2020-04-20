@@ -81,15 +81,8 @@ class Login extends StatelessWidget {
                     height: 20,
                   ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
-                      MaterialButton(
-                        onPressed: () {},
-                        child: Text("Forgot Password ?"),
-                      ),
-                      Expanded(
-                        child: Container(),
-                      ),
                       FlatButton(
                         child: Text("Login"),
                         color: theme.getTheme() ? Colors.white : Colors.black,
